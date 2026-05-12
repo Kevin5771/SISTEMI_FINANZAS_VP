@@ -11,7 +11,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://sistemafinanzas-vp-backend.onrender.com"
+to: https://sistemafinanzas-vp-backend.onrender.com/api/:splat
   status = 200
   force = true
 
