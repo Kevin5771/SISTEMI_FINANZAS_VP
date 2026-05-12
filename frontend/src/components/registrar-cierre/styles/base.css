@@ -1,0 +1,151 @@
+:root{
+  --primary:#14B866;
+  --dark:#0F3D2E;
+  --accent:#FF7A00;
+  --cream:#FFF7ED;
+  --slate:#1F2937;
+
+  --radius:14px;
+  --shadow:0 20px 60px rgba(0,0,0,.08);
+
+  /* ===== columnas uniformes para Gastos ===== */
+  --gastos-cols: 220px 1fr 140px 140px 120px;  /* Cat | Desc | Ref | Cant | Acc */
+}
+
+/* Layout general */
+.rc-shell{
+  width:100%;
+  padding: 8px clamp(1px, 2.8vw, 1px);
+  gap: 16px;
+}
+
+.alt-theme h1{
+  color: white;
+}
+
+/* Header (izquierda: título + fecha; derecha: acciones) */
+.rc-header{
+  display:flex; 
+  align-items:flex-start; 
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom: 8px;
+}
+.rc-header h1{
+  margin:0; color:var(--dark);
+  font-size: clamp(24px, 4.2vw, 44px);
+  font-weight:800; letter-spacing:.2px;
+}
+.rc-header-left{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.rc-actions{
+  display:flex; 
+  gap:8px; 
+  flex-wrap:wrap; 
+  justify-content:flex-end;
+}
+
+/* Fecha */
+.rc-date{ display:flex; flex-direction:column; gap:6px; }
+.rc-date label{ font-weight:700; color:var(--dark); }
+.rc-date input[type="date"]{
+  border:1px solid #e7e2d9; border-radius:12px;
+  padding:10px 12px; background:#f9fafb; color:#1F2937;
+  min-width: 220px; /* <- igual que sucursal */
+}
+
+/* === Filtro de Sucursal (por ID) === */
+.rc-header .rc-date label[for="rc-sucursal"] {
+  font-weight: 700;
+  color: #0F3D2E; 
+  margin-bottom: 4px;
+  display: inline-block;
+}
+.rc-header .rc-date select#rc-sucursal {
+  display: block;
+  width: 100%;
+  min-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid #e7e2d9;
+  border-radius: 12px;
+  background: #f9fafb;
+  color: #1F2937;
+  font-size: 14px;
+  line-height: 1.2;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.rc-header .rc-date select#rc-sucursal:focus {
+  border-color: #14B866;
+  box-shadow: 0 0 0 2px rgba(20, 184, 102, .25);
+  outline: none;
+}
+.rc-header .rc-date select#rc-sucursal:disabled {
+  background: #f5f5f5;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Botones */
+.rc-btn{
+  background:#fff;
+  border:1px solid #e7e2d9;
+  color:#1F2937;
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+.rc-btn:hover{ background:#f9fafb; color:black; }
+
+.rc-btn-primary{
+  background:var(--primary); 
+  color:#fff; 
+  border-color:var(--primary);
+}
+.rc-btn-primary:hover{ filter:brightness(.98); }
+
+.rc-btn-accent{
+  display: flex;
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
+  justify-content:flex-end;
+  margin-top: 10px;
+}
+.rc-btn-accent:hover{ filter:brightness(.98); }
+
+.rc-btn-outline{ background:#fff; color:var(--slate); }
+.rc-btn-ghost{
+  background:transparent; border:1px solid #e7e2d9; color:#b42323;
+}
+
+
+/* ===== Header: Fecha y Sucursal en una columna (≤555px) ===== */
+@media (max-width: 555px){
+  /* Forzamos grid de una columna, aunque haya estilos inline */
+  .rc-header .rc-date{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Inputs a ancho completo en mobile */
+  .rc-header .rc-date input[type="date"],
+  .rc-header .rc-date select#rc-sucursal{
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Botón de guardar (rc-tabs-actions) ya ocupa 1/-1 por inline; aquí solo aseguramos separación */
+  .rc-header .rc-date .rc-tabs-actions{
+    margin-top: 8px !important;
+  }
+}

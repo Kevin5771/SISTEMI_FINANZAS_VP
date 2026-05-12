@@ -1,0 +1,217 @@
+/* RegistrarPagos.css — unificado para que la tabla herede exactamente el look & feel de Gastos */
+
+/* ===== Variables de tema ===== */
+:root{
+  --primary:#14B866;
+  --dark:#0F3D2E;
+  --accent:#FF7A00;
+  --cream:#FFF7ED;
+  --slate:#1F2937;
+  --dark-4:#15824C;
+
+  --radius:14px;
+  --shadow:0 20px 60px rgba(0,0,0,.08);
+
+  /* Columnas de la tabla RegistrarPagos (Cat, Desc, Cantidad, Ref, Comprobante, Acciones) */
+  --pagos-cols: 200px 240px 200px 200px 140px 120px;
+}
+
+/* ===== Shell / Layout de la vista ===== */
+.registrar-pagos .rc-card-hd h3 { margin: 0; }
+
+.registrar-pagos,
+.registrar-pagos .rc-header,
+.registrar-pagos .rc-tabs-row,
+.registrar-pagos .rc-card { max-width: none; width: 100%; }
+
+/* Fuerza que el header pueda estirar a la derecha */
+.registrar-pagos .rc-header{
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.registrar-pagos .rc-header-left{
+  flex: 1 1 auto;      /* <-- ocupa todo el ancho disponible */
+  min-width: 0;
+}
+
+/* Si el contenedor padre es un grid de 2 columnas, que esta vista las cruce */
+.registrar-pagos { grid-column: 1 / -1; }
+.registrar-pagos .rc-card { grid-column: 1 / -1; }
+
+/* Leyenda opcional (si se usa) */
+.registrar-pagos .rc-gastos-legend{
+  display:grid; align-items:center; text-align:center;
+  grid-template-columns: var(--pagos-cols);
+  margin:2px 0 8px; font-size:13px; font-weight:600; color:#6b7280; min-height:22px;
+}
+.registrar-pagos .rc-gastos-legend span{ white-space:nowrap; }
+
+/* Filas uniformes (si usas filas fuera de la tabla) */
+.registrar-pagos .rc-gasto-row{
+  display:grid; grid-template-columns: var(--pagos-cols); align-items:center; gap:8px; min-height:48px;
+}
+.registrar-pagos .rc-gasto-row .rc-input,
+.registrar-pagos .rc-gasto-row .rc-select{ width:100% !important; max-width:none !important; display:block; box-sizing:border-box; }
+
+/* ======== TABLA ======== */
+.rc-gastos-table{ width:100%; border-collapse:collapse; }
+.rc-gastos-table thead th{ text-align:center; color:#6b7280; font-weight:700; }
+.rc-gastos-table td{ vertical-align:middle; }
+.rc-gastos-table td:nth-child(2){ text-align:left; }
+.rc-gastos-table td:not(:nth-child(2)){ text-align:center; }
+.rc-gastos-table .rc-input,
+.rc-gastos-table .rc-select{ width:100%; }
+.rc-gastos-table td .rc-input,
+.rc-gastos-table td .rc-select{ width:100% !important; max-width:none !important; display:block; box-sizing:border-box; }
+.rc-gastos-table td:nth-child(2) .rc-input{ text-align:left; }
+.rc-gastos-table td:nth-child(3) .rc-input,
+.rc-gastos-table td:nth-child(4) .rc-input{ text-align:center; }
+.rc-gastos-table tfoot td{ padding:10px 12px; }
+
+/* Botonera / comprobante */
+.rc-proof-cell{ display:flex; align-items:center; justify-content:center; gap:8px; }
+.rc-iconbtn{ display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border:1px solid #e7e2d9; border-radius:10px; background:#fff; box-shadow:var(--shadow); padding:0; cursor:pointer; }
+.rc-iconbtn:hover{ background:#f9fafb; }
+.rc-iconbtn img{ width:25px !important; height:25px !important; object-fit:contain; }
+
+.rc-gastos-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+/* ===== Modal visor ===== */
+.rc-modal-open{ overflow:hidden !important; }
+.rc-modal-mask{ position:fixed !important; inset:0 !important; background:rgba(0,0,0,0.5) !important; display:flex !important; align-items:center !important; justify-content:center !important; z-index:9999 !important; }
+.rc-modal-card.rc-viewer-card{ width:min(920px,92vw) !important; height:min(92vh,92dvh) !important; background:#fff !important; border-radius:12px !important; overflow:hidden !important; display:flex !important; flex-direction:column !important; box-shadow:0 8px 28px rgba(0,0,0,.22) !important; }
+.rc-modal-hd{ padding:10px 12px !important; border-bottom:1px solid #eee !important; display:flex !important; align-items:center !important; justify-content:space-between !important; gap:8px !important; flex:0 0 auto !important; }
+.rc-modal-title{ margin:0 !important; overflow:hidden !important; text-overflow:ellipsis !important; white-space:nowrap !important; }
+.rc-viewer-body{ flex:1 1 auto !important; min-height:0 !important; overflow:auto !important; background:#0b0b0b !important; display:flex !important; align-items:center !important; justify-content:center !important; }
+.rc-viewer-img{ max-width:100% !important; max-height:100% !important; width:auto !important; height:auto !important; object-fit:contain !important; display:block !important; }
+.rc-viewer-empty{ color:#fff !important; padding:24px !important; text-align:center !important; }
+
+/* ===== Responsive tabla ===== */
+@media (max-width: 860px){
+  .rc-gastos-table thead{ border:0; clip:rect(0 0 0 0); height:1px; margin:-1px; overflow:hidden; padding:0; position:absolute; width:1px; }
+  .rc-gastos-table colgroup{ display:none; }
+  .rc-gastos-table,
+  .rc-gastos-table tbody,
+  .rc-gastos-table tr,
+  .rc-gastos-table td{ display:block; width:100%; }
+  .rc-gastos-table tr{ background:#fff; margin:10px 0; border:1px solid #e7e2d9; border-radius:12px; box-shadow:var(--shadow); overflow:hidden; }
+  .rc-gastos-table td{ position:relative; border:none; border-top:1px solid #f0ece6; padding:12px 14px 12px calc(14px + 140px); min-height:48px; text-align:left; }
+  .rc-gastos-table td:first-child{ border-top:none; }
+  .rc-gastos-table td::before{ content: attr(data-label) !important; position:absolute; left:14px; top:50%; transform:translateY(-50%); width:130px; font-weight:800; color:var(--dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rc-gastos-table td:nth-child(5) > div,
+  .rc-gastos-table td:nth-child(6){ display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding-top:12px; padding-bottom:12px; }
+  .rc-gastos-table tfoot,
+  .rc-gastos-table tfoot tr,
+  .rc-gastos-table tfoot td{ display:block; width:100%; }
+  .rc-gastos-table tfoot td{ border:1px solid #e7e2d9; border-radius:12px; margin-top:6px; padding:12px 14px; text-align:right; background:#fff; font-weight:800; }
+  .rc-gastos-table tfoot td + td + td ~ td{ display:none; }
+}
+@media (max-width: 555px){
+  .rc-gastos-table td:nth-child(1) .rc-input,
+  .rc-gastos-table td:nth-child(2) .rc-input,
+  .rc-gastos-table td:nth-child(3) .rc-input,
+  .rc-gastos-table td:nth-child(4) .rc-input{ font-size:16px; padding:10px 10px; min-width:120px; line-height:1.2; margin-left:-29px; }
+  .rc-gastos-table td{ padding:12px 14px 12px calc(14px + 140px); }
+  .rc-gastos-table tfoot{ display:block !important; }
+  .rc-gastos-table tfoot tr{ display:flex !important; align-items:center; justify-content:flex-end; gap:8px; border:1px solid #e7e2d9; border-radius:12px; margin-top:8px; padding:12px 14px; background:#fff; box-shadow:var(--shadow); }
+  .rc-gastos-table tfoot td{ display:none !important; border:none !important; margin:0 !important; padding:0 !important; }
+  .rc-gastos-table tfoot td:nth-child(2),
+  .rc-gastos-table tfoot td:nth-child(3){ display:inline-flex !important; align-items:center; justify-content:flex-end; gap:6px; margin:0 !important; padding:0 !important; font-weight:800; color:var(--dark); white-space:nowrap; }
+  .rc-gastos-table tfoot td + td + td ~ td{ display:none !important; }
+}
+
+/* =========================================================
+   KPI a la DERECHA del header (fila a la derecha)
+   ========================================================= */
+
+/* La grilla interna del bloque de fecha + KPI */
+.registrar-pagos .rc-header .rc-date{
+  display: grid;
+  grid-template-columns: 320px 1fr !important; /* Col 1: fecha | Col 2: KPI */
+  column-gap: 16px !important;
+  align-items: start !important;
+}
+
+/* El bloque KPI es el <section class="rc-card"> dentro de .rc-date */
+.registrar-pagos .rc-header .rc-date > section.rc-card{
+  grid-column: 2 / -1 !important;  /* va en la col 2 */
+  justify-self: end;                /* pegado al borde derecho de la col 2 */
+  width: auto !important;           /* evita el width:100% global de .rc-card */
+  margin-top: 0 !important;
+}
+
+/* Las cards en fila y pegadas a la derecha */
+.registrar-pagos .rc-header .rc-date > section.rc-card .rc-card-bd{
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 16px;
+  justify-content: end;             /* alinea TODO el grupo a la derecha */
+  align-items: stretch;
+  width: auto;
+  max-width: 100%;
+}
+
+/* Estilo visual de cada card */
+.registrar-pagos .rc-header .rc-date > section.rc-card .rc-card-bd > div{
+  background: #fff;
+  border: 1px solid #eee7dd;
+  border-radius: 14px;
+  padding: 14px 16px;
+  text-align: center;
+  box-shadow: 0 8px 22px rgba(0,0,0,.05);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.registrar-pagos .rc-header .rc-date > section.rc-card .rc-card-bd > div:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+/* Títulos e iconos */
+.registrar-pagos .kpi-title{
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.registrar-pagos .kpi-title img{
+  width: 28px; height: 28px; object-fit: contain;
+}
+
+/* Montos grandes y verdes */
+.registrar-pagos .kpi-value{
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  line-height: 1.1;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.2px;
+}
+
+/* ===== Responsivo KPI ===== */
+@media (max-width: 1200px){
+  .registrar-pagos .rc-header .rc-date > section.rc-card .rc-card-bd{
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+@media (max-width: 780px){
+  .registrar-pagos .rc-header .rc-date{
+    grid-template-columns: 1fr !important;
+  }
+  .registrar-pagos .rc-header .rc-date > section.rc-card{
+    grid-column: 1 / -1 !important;
+    justify-self: stretch;         /* ocupa todo el ancho en móvil */
+    width: 100% !important;
+    margin-top: 8px !important;
+  }
+  .registrar-pagos .rc-header .rc-date > section.rc-card .rc-card-bd{
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+  }
+  .registrar-pagos .kpi-title img{
+    width: 24px; height: 24px;
+  }
+}

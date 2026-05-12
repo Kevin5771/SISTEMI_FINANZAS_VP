@@ -1,0 +1,44 @@
+{
+  "emulators": {
+    "apphosting": {
+      "port": 3001,
+      "rootDirectory": "y"
+    },
+    "auth": {
+      "port": 3001
+    },
+    "functions": {
+      "port": 3001
+    },
+    "firestore": {
+      "port": 3001
+    },
+    "database": {
+      "port": 3001
+    },
+    "hosting": {
+      "port": 3001
+    },
+    "pubsub": {
+      "port": 3001
+    },
+    "storage": {
+      "port": 3001
+    },
+    "eventarc": {
+      "port": 3001
+    },
+    "dataconnect": {
+      "port": 3001,
+      "dataDir": "dataconnect/.dataconnect/pgliteData"
+    },
+    "tasks": {
+      "port": 3001
+    },
+    "ui": {
+      "enabled": true,
+      "port": 3001
+    },
+    "singleProjectMode": true
+  }
+}

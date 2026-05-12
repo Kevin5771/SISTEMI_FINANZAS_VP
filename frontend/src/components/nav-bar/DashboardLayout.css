@@ -1,0 +1,605 @@
+:root{
+  /* Superficie del contenido (también usada por el pill activo) */
+  --surface:#ffffff;
+
+  /* cuánto “sale” la pastilla hacia la derecha en escritorio */
+  --pill-out: 22px;
+}
+
+/* Tema oscuro mapea superficie */
+.alt-theme{ 
+  --surface:#0d291b; 
+  --surface-2:#0d291b; 
+  --cream: #FFF4E8;
+  --dark-2:#1b5a46;  
+  background: linear-gradient(180deg, var(--surface), var(--dark-2));
+}
+
+*{ box-sizing:border-box; }
+html, body, #root{ height:100%; }
+
+/* Fondo global: degradado verde */
+html{
+  background: linear-gradient(180deg, var(--dark), var(--dark-3));
+}
+
+/* Sin scroll global: el scroll vive en .admin-content */
+body{
+  margin:0;
+  background: transparent;
+  font-family:'Poppins',system-ui,sans-serif;
+  color:var(--slate);
+  overflow: hidden;
+}
+
+/* Bloqueo de scroll cuando el drawer está abierto */
+.drawer-open body{ overflow: hidden; }
+
+/* ===== Layout contenedor ===== */
+.admin-container{
+  height: 100dvh;
+  background: transparent;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "sidebar content"
+    "sidebar content";
+  gap: 10px;
+  padding: 10px;
+}
+
+/* ===== Sidebar (sin scroll, footer visible) ===== */
+.sidebar{
+  grid-area: sidebar;
+  position: sticky;
+  top: 10px;
+  height: calc(100dvh - 20px);
+  width: var(--sb-open);
+  background: linear-gradient(180deg, var(--surface), var(--dark-2));
+  color:#EAF7F1;
+  display:flex; flex-direction:column;
+  overflow: visible; /* el pill del activo puede sobresalir */
+  border-radius: var(--radius);
+  z-index: 1000; /* por encima del backdrop */
+}
+
+.sb-header{ position:relative; padding:14px 12px 8px; }
+.brand{ display:grid; place-items:center; height:120px; }
+.brand img{ max-width:16rem; height:auto; }
+
+.menu-btn{
+  display:none;
+  position:absolute; top:.6rem; right:.6rem;
+  width:2.2rem; height:2.2rem; border-radius:50%;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.12); box-shadow:0 6px 18px rgba(0,0,0,.18);
+  color:#fff; font-size:18px;
+}
+
+/* ===== Menú ===== */
+.menu-container{
+  flex:1 0 auto;
+  padding: 20px 12px;
+  overflow-y: auto;                 /* scroll interno del sidebar */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: 84px;             /* que el footer no tape el último ítem */
+}
+.menu-container::-webkit-scrollbar{ width:0; height:0; }
+.menu-container{ scrollbar-width: none; }
+
+.menu{
+  list-style:none; margin:0; padding:0;
+  display:flex; flex-direction:column; gap: var(--item-gap);
+}
+
+/* Ítems */
+.menu-link{
+  position:relative;
+  display:flex; align-items:center; gap:.9rem;
+  width: 100%;
+  margin-right: 0;
+  padding:12px 14px 12px 52px;
+  border-radius:16px;
+  color:#EAF7F1;
+  text-decoration:none;
+  transition:transform .08s ease, background .25s, color .25s, box-shadow .25s;
+  font-size:1.3rem; font-weight:600;
+  min-height:54px; will-change: transform, width, margin-right;
+}
+.menu-link:hover{
+  background: rgba(255,255,255,.08);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+.menu-link img{
+  position:absolute; left:12px;
+  width: var(--item-icon); height: var(--item-icon);
+  padding:6px; border-radius:12px;
+  background: rgba(255,255,255,.14);
+  box-shadow: var(--inner-shadow);
+  object-fit:contain;
+}
+
+/* Activo sobresaliente */
+.menu-link.active{
+  background: var(--surface);
+  color: var(--dark);
+  border-radius: 18px;
+  width: calc(101% + var(--pill-out));
+  margin-right: calc(var(--pill-out) * -1);
+  position: relative;
+  z-index: 3;
+  transition:
+    width .28s ease, margin-right .28s ease,
+    background .25s ease, color .25s ease, box-shadow .25s ease;
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}
+.menu-link.active img{
+  background:#F3FAF6;
+  box-shadow: inset 0 0 0 1px rgba(21,94,75,.08);
+}
+
+/* Accesibilidad */
+.menu-link:focus-visible{
+  outline: none;
+  box-shadow:
+    0 10px 30px rgba(148, 38, 38, 0.12),
+    0 0 0 2px rgba(255,255,255,.65) inset;
+}
+
+/* ===== Footer del sidebar ===== */
+.sb-footer{
+  margin-top: auto;
+  border-top:1px solid rgba(255,255,255,.15);
+  padding:10px 12px 14px;
+  background: transparent;
+}
+.footer-actions{ display:flex; gap:10px; flex-direction:column; }
+
+.theme-button{
+  flex:1;
+  display:flex; align-items:center; justify-content:end; gap:4px;
+  width:40px; height:40px;
+  margin-right: 10px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.22);
+  background: var(--dark-2);
+  color:#fff; cursor:pointer; font-weight:600;
+}
+.logout-button{
+  flex:1;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  height:42px; border-radius:14px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.12);
+  color:#fff; cursor:pointer; font-weight:600;
+}
+.theme-button i, .logout-button i{ font-size:1.2rem; }
+.theme-button:hover, .logout-button:hover{
+  background: white; color: var(--dark-2); border-color: var(--dark-2);
+}
+
+/* ===== Área de contenido ===== */
+.admin-content{
+  grid-area: content;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  z-index: auto !important;
+}
+
+/* Userbar */
+.userbar{
+  top: 0;
+  z-index: 5;
+  display:flex; align-items:center; justify-content:end;
+  backdrop-filter: blur(6px);
+  color:var(--dark-2);
+  padding:5px 5px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.72);
+}
+.alt-theme .userbar{ background: rgba(0,0,0,.22); }
+
+.userbar .user-chip{ display:flex; align-items:center; gap:10px; }
+.userbar .user-chip img{
+  width:38px; height:38px; border-radius:50%; object-fit:cover;
+  background-color: white; box-shadow:0 4px 10px rgba(0,0,0,.18);
+}
+.userbar .meta{ display:flex; flex-direction:column; line-height:1.1; }
+.userbar .meta strong{ font-size:.95rem; }
+.userbar .meta small{ opacity:1; color: var(--dark-2); }
+.userbar .actions .icon-btn{
+  width:40px; height:40px; border-radius:14px;
+  margin-right: 10px;
+  border:1px solid rgba(255,255,255,.25);
+  background: var(--dark-2);
+  color: white; cursor:pointer; gap:4px;
+}
+.userbar .actions .icon-btn:hover{
+  background: white; color: var(--dark-2); border-color: var(--dark-2);
+}
+
+/* Tarjeta que contiene el <Outlet /> */
+.content-card{
+  background: var(--surface);
+  color: var(--slate);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px clamp(16px,3vw,40px);
+  min-height: calc(100dvh - 120px);
+  overflow-x: hidden;
+  border: 1px solid rgba(0,0,0,.04);
+}
+
+/* ===== Tema oscuro ===== */
+.alt-theme .content-card{
+  background: #03180e;
+  color: #05251a;
+  border-color: rgba(255,255,255,.06);
+}
+.alt-theme .userbar{ color: white; }
+.alt-theme .meta small{ opacity:1; color: white; }
+.alt-theme .menu-link.active{
+  background:  #03180e; color:#e6f4ef;
+}
+.alt-theme .menu-link.active img{
+  background: #e6f4ef; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.alt-theme .theme-button, .logout-button{ background-color: white; color: var(--dark-2); }
+.alt-theme .actions .icon-btn{ background-color: white; color: var(--dark-2); }
+.alt-theme .theme-button:hover, .logout-button:hover, .actions .icon-btn:hover{
+  background:var(--dark-2); color:white; border-color:#fff;
+}
+.alt-theme .h1{ color: white; }
+
+/* ===== Backdrop (drawer móvil) ===== */
+.backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.25);
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 900; /* debajo del sidebar */
+}
+.backdrop.show{ opacity: 1; pointer-events: auto; }
+
+/* ===== Botón hamburguesa ===== */
+.mobile-trigger{
+  position: fixed;
+  left: 16px; top: 16px;
+  width:42px; height:42px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(0,0,0,.62);      /* más oscuro */
+  display:none; align-items:center; justify-content:center;
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+  z-index: 1002; cursor:pointer;
+  color:#fff; font-size:22px;
+  backdrop-filter: blur(6px);
+}
+.mobile-trigger:hover{ background: rgba(0,0,0,.75); }
+
+/* ===== Submenús (Registrar / Historial) ===== */
+.menu-item.group { margin: 6px 0; }
+
+.menu-item.group > .group-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  width: 100%;
+  padding: 12px 14px 12px 52px;
+  border-radius: 16px;
+  background: transparent;
+  color: #EAF7F1;
+  border: 0;
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-align: left;
+  transition:transform .08s ease, background .25s, color .25s, box-shadow .25s;
+}
+.menu-item.group > .group-toggle:hover {
+  background: rgba(255,255,255,.08);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+.menu-item.group > .group-toggle img {
+  position: absolute;
+  left: 12px;
+  width: var(--item-icon);
+  height: var(--item-icon);
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.14);
+  box-shadow: var(--inner-shadow);
+  object-fit: contain;
+}
+.menu-item.group > .group-toggle i {
+  margin-left: auto;
+  font-size: 1.1rem;
+  opacity: .9;
+}
+
+/* Submenú */
+.submenu {
+  list-style: none;
+  margin: 8px 0 4px;
+  padding: 0 0 0 44px;
+  display: grid;
+  gap: 6px;
+  overflow: visible; /* deja sobresalir la pastilla */
+}
+.submenu-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: #EAF7F1;
+  text-decoration: none;
+  font-weight: 500;
+  transition:
+    transform .08s ease,
+    background .25s ease,
+    color .25s ease,
+    box-shadow .25s ease,
+    width .28s ease,
+    margin-right .28s ease;
+  will-change: transform, width, margin-right;
+}
+.submenu-link:hover {
+  background: rgba(255,255,255,.08);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+.submenu-link.active {
+  background: var(--surface);
+  color: var(--dark);
+  font-weight: 700;
+  border-radius: 18px;
+  width: calc(101% + var(--pill-out));
+  margin-right: calc(var(--pill-out) * -1);
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}
+.alt-theme .submenu-link.active {
+  background: #03180e; color: #e6f4ef;
+}
+.group-toggle:focus-visible,
+.submenu-link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 10px 30px rgba(148, 38, 38, 0.12),
+    0 0 0 2px rgba(255,255,255,.65) inset;
+}
+@media (max-width: 1100px){
+  .submenu-link.active{
+    width: 100%;
+    margin-right: 0;
+    border-radius: 18px;
+  }
+}
+
+/* ===== Responsive / Drawer behavior ===== */
+@media (max-width: 1100px){
+  .admin-container{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "content"
+      "content";
+  }
+
+  .sidebar{
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    height: 100dvh;
+    width: min(90vw, var(--sb-open));
+    max-width: var(--sb-open);
+    transform: translateX(-100%);
+    transition: transform .28s ease;
+    border-radius: 0 20px 20px 0;
+    overflow: hidden;
+  }
+  .sidebar.open{ transform: translateX(0); }
+
+  .mobile-trigger{ display:flex; }
+
+  .admin-content{
+    grid-area: content;
+    padding-top: 74px;
+    overflow: auto;
+  }
+
+  /* En móvil, el pill no sobresale */
+  :root{ --pill-out: 0px; }
+  .menu-link.active{
+    width: 100%; margin-right: 0;
+    border-radius: 18px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.18);
+  }
+
+  .menu-container{ padding-bottom: 110px; }
+}
+
+/* Ajustes adicionales de la userbar en pantallas pequeñas */
+@media (max-width: 720px){
+  /* Layout: usuario a la izquierda, dos botones a la derecha (misma fila) */
+  .userbar{
+    display: grid !important;
+    grid-template-areas: "chip theme actions";
+    grid-template-columns: 1fr auto auto;  /* chip ocupa, botones se pegan a la derecha */
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px;
+    background: rgba(255,255,255,.85);
+    border-radius: 12px;
+  }
+  .alt-theme .userbar{ background: rgba(0,0,0,.28); }
+
+  .userbar .user-chip{ grid-area: chip; justify-self: start; min-width: 0; }
+  .userbar .theme{ grid-area: theme; justify-self: end; }
+  .userbar .actions{ grid-area: actions; justify-self: end; }
+
+  .userbar .theme .theme-button,
+  .userbar .actions .icon-btn{
+    width: 44px; height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 14px;
+  }
+
+  .userbar .user-chip img{ width:34px; height:34px; }
+  .userbar .meta strong{ font-size:.9rem; }
+  .userbar .meta small{ font-size:.75rem; }
+}
+
+/* ================== FIXES de Registrar Cierre (apertura) ================== */
+.rc-col-hd{
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.rc-col-hd > div:last-child{
+  margin-left: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  flex-wrap: nowrap !important;
+  min-width: 80px !important;
+}
+.rc-col-hd > div:last-child .rc-cell-label{
+  white-space: nowrap !important;
+  font-weight: 700;
+  color: #6b7280;
+}
+.rc-col-hd > div:last-child .rc-input{
+  width: 110px !important;
+  height: 34px !important;
+  padding: 6px 8px !important;
+  font-size: 14px !important;
+  text-align: right !important;
+  max-width: none !important;
+  font-variant-numeric: tabular-nums;
+}
+.rc-col-hd > div:last-child .rc-input.rc-no-spin,
+.rc-col-hd > div:last-child .rc-input.rc-no-step{
+  appearance: textfield !important;
+  -moz-appearance: textfield !important;
+  -webkit-appearance: none !important;
+}
+.rc-col-hd > div:last-child .rc-input.rc-no-spin::-webkit-outer-spin-button,
+.rc-col-hd > div:last-child .rc-input.rc-no-spin::-webkit-inner-spin-button,
+.rc-col-hd > div:last-child .rc-input.rc-no-step::-webkit-outer-spin-button,
+.rc-col-hd > div:last-child .rc-input.rc-no-step::-webkit-inner-spin-button{
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+@media (max-width: 500px){
+  .rc-col-hd > div:last-child .rc-input{ width: 96px !important; }
+}
+
+/* ==== FIX: scroll vertical del sidebar con submenús largos ==== */
+.sidebar{
+  display: flex !important;
+  flex-direction: column !important;
+  overflow-x: hidden !important;    /* sin scroll horizontal */
+  overflow-y: hidden !important;    /* el scroll vive en .menu-container */
+}
+.menu-container{
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;      /* scroll vertical aquí */
+  overflow-x: hidden !important;    /* sin scroll horizontal */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-bottom: 96px !important;
+}
+.menu-container::-webkit-scrollbar{ width:0; height:0; }
+.menu-container{ scrollbar-width: none; }
+@media (max-width:1100px){
+  .menu-container{ padding-bottom: 120px !important; }
+}
+
+/* ====== OVERRIDES ====== */
+/* --- FIX 1: en móvil, deja que la página pueda crecer y scrollear --- */
+@media (max-width:1100px){
+  html, body {
+    height: auto;            /* que no se encajen a 100dvh */
+  }
+  body{
+    overflow: auto;          /* permite scroll del documento */
+  }
+
+  /* El grid puede medir más que el viewport si el contenido lo requiere */
+  .admin-container{
+    height: auto;            /* en lugar de 100dvh rígido */
+    min-height: 100dvh;      /* aún llena la pantalla mínima */
+  }
+
+  /* El área de contenido ya no necesita “forzar” alturas mínimas */
+  .content-card{
+    min-height: unset;       /* evita pelear con los 100dvh del contenedor */
+  }
+}
+
+/* --- FIX 2: asegura que el contenido no quede detrás de la userbar --- */
+.userbar{
+  position: sticky;   /* ya actúa como barra superior */
+  top: 0;
+}
+
+/* --- FIX 3: evita que el overlay/backdrop tape el contenido por z-index --- */
+.admin-content{
+  position: relative;
+  z-index: 1;         /* por encima del backdrop (z:900) ya estás, pero explícitalo */
+}
+
+/* --- FIX 4: si usas drawer en móvil, solo bloquea el scroll al ABRIRLO --- */
+/* Ya tienes .drawer-open body { overflow:hidden; }  */
+
+
+/* 2) Modal SIEMPRE por encima del sidebar */
+.rc-modal-mask,
+.ReactModal__Overlay,
+.modal-backdrop{
+  z-index: 2000 !important;
+}
+
+/* === OVERRIDES: quitar pill y dejar activo normal === */
+.menu-link.active,
+.submenu-link.active{
+  width: 100% !important;
+  margin-right: 0 !important;
+  border-radius: 16px !important;   /* igual que los ítems normales */
+  position: static !important;      /* sin posicionamiento especial */
+  z-index: auto !important;         /* sin elevar por encima */
+}
+
+/* Si quieres asegurarte de que nada sobresalga, deja oculto el overflow horizontal */
+.sidebar,
+.menu-container{
+  overflow-x: hidden !important;
+}
+
+/* === A 350px o menos: ocultar email en la userbar === */
+@media (max-width: 370px){
+  .userbar .user-chip { min-width: 0; }        /* permite encoger el chip */
+  .userbar .meta { overflow: hidden; }         /* habilita elipsis */
+  .userbar .meta small { display: none !important; } /* oculta email */
+  .userbar .meta strong{
+    display: block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;                   /* elipsis para nombres largos */
+  }
+}

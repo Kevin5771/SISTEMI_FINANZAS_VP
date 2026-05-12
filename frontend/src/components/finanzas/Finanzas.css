@@ -1,0 +1,709 @@
+/* Paleta (misma del login/dashboard) */  
+:root{
+  --primary:#14B866;
+  --dark:#155E4B;
+  --dark-2:#0F3D2E;
+  --dark-3:#041d15;
+  --accent:#FF7A00;
+  --cream:#FFF4E8;
+  --slate:#1F2937;
+
+  --sb-open: 17.5rem;
+  --radius: 22px;
+  --shadow: 0 20px 60px rgba(0,0,0,.10);
+  --inner-shadow: 0 1px 0 rgba(255,255,255,.15) inset;
+
+  --item-icon: 28px;
+  --item-gap: 10px;
+}
+
+html, body, #root {
+  height: 100%;
+  background: linear-gradient(180deg, var(--surface), var(--dark-2));
+}
+
+/* ===== Shell general ===== */
+.home-shell{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+/* ===== Topbar =====
+    Título (izq) | Botón (enmedio) | Selector (der)
+*/
+.topbar{
+  width: min(1200px, 100%);
+  margin: 0 auto 0px auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title addbtn"
+    "branch branch";
+  align-items: center;
+  gap: 0px;
+}
+
+.home-header{
+  margin: 0;
+  margin-top: -10px;
+  grid-area: title;
+}
+.home-header h1{
+  margin: 0px 0;
+  color: var(--dark);
+  font-weight: 800;
+  letter-spacing: .3px;
+  font-size: clamp(28px, 4vw, 48px);
+  animation: fadeInUp .6s ease both;
+  width: 100%;
+}
+
+/* Botón agregar (derecha en la topbar) */
+.add-task-btn{
+  grid-area: addbtn;
+  display: inline-flex;
+  justify-self: end;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  min-width: 190px;
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+}
+.add-task-btn:hover{ filter: brightness(0.95); }
+.add-task-btn:active{ transform: translateY(1px); }
+
+/* ====== Filtro de sucursal (debajo y centrado) ====== */
+.branch-filter{
+  grid-area: branch;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto 6px auto;
+
+  display: flex;
+  justify-content: center;  /* centrado */
+  gap: 10px;
+  align-items: center;
+}
+.branch-filter label{
+  font-weight: 600;
+  color: var(--dark-2);
+}
+.branch-filter select{
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: var(--shadow);
+  background: #fff;
+  min-width: 260px;
+  max-width: min(90vw, 420px);
+}
+
+/* ===== Fila de contenido: KPI columna izq + calendario der */
+.content-row{
+  width: min(1400px, 100%);
+  margin: 0 auto 10px auto;
+  display: grid;
+  grid-template-columns: 280px 1fr;  /* izq KPIs | der calendario */
+  gap: 24px;
+  align-items: start;
+}
+
+/* =========================
+   KPI (layout solicitado)
+   ========================= */
+
+/* Columna izquierda: de columna única a rejilla fluida en móviles */
+.kpi-left{
+  display: grid;
+  grid-template-columns: 1fr;   /* desktop estrecho: 1 columna */
+  gap: 12px;
+}
+
+/* Estructura de cada KPI:
+   fila 1:  [Sucursal: ...]   (centrado y ocupa 2 col)
+   fila 2:  [Caja chica disponible] | [Dinero para depósitos]
+   fila 3:  [Q ...]                 | [Q ...]
+*/
+.kpi-card{
+  background: #fff;
+  border: 1px solid #ede9e2;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 12px 16px;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "suc suc"
+    "lab1 lab2"
+    "val1 val2";
+  row-gap: 6px;
+  column-gap: 16px;
+
+  /* alturas sin conflicto */
+  min-height: 110px;
+}
+
+/* 1) Título principal: “Sucursal: …” */
+.kpi-card > .kpi-title:first-child{
+  grid-area: suc;
+  text-align: center;
+  font-size: clamp(.95rem, 2vw, 1.05rem);
+  font-weight: 700;
+  color: var(--dark-2);
+  margin: 0;
+}
+
+/* 2) Subtítulos (labels) */
+.kpi-card > .kpi-title:nth-child(2){
+  grid-area: lab1;
+  justify-self: start;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--dark-2);
+  margin: 0;
+}
+.kpi-card > .kpi-title:nth-child(4){
+  grid-area: lab2;
+  justify-self: start;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--dark-2);
+  margin: 0;
+}
+
+/* 3) Valores (Q …) */
+.kpi-card > .kpi-value:nth-child(3){
+  grid-area: val1;
+  justify-self: start;
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  color: var(--accent);
+  font-weight: 750;
+  line-height: 1.25;
+}
+.kpi-card > .kpi-value:nth-child(5){
+  grid-area: val2;
+  justify-self: start;
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  color: var(--accent);
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+/* (fallback por si hay estilos heredados) */
+.kpi-title{ margin-bottom: 0; }
+
+/* Calendario a la derecha (sin cambios) */
+.home-calendar-card{
+  background: #fff;
+  border: 1px solid #ede9e2;
+  border-radius: 16px;
+  padding: clamp(10px, 2vw, 16px);
+  box-shadow: var(--shadow);
+  overflow: visible;
+}
+
+/* =========================
+   Syncfusion / RBC tweaks
+   ========================= */
+.e-schedule{
+  font-family: 'Poppins', system-ui, sans-serif;
+}
+.e-schedule .e-header-cells{
+  background-color: #fef8f4;
+  color: var(--dark);
+  font-weight: 600;
+  border-bottom: 1px solid #e7e2d9;
+}
+.e-schedule .e-toolbar .e-tbar-btn .e-icons{ color: var(--dark); }
+.e-schedule .e-week-number{
+  background-color: rgba(20,184,102,.12);
+  color: var(--dark);
+  font-weight: 700;
+}
+.e-schedule .e-appointment{
+  background-color: var(--primary);
+  border: 1px solid rgba(20,184,102,.3);
+  color: #fff;
+  font-weight: 600;
+}
+.e-schedule .e-appointment:hover{ opacity: .92; }
+
+/* Animación */
+@keyframes fadeInUp{
+  from{ opacity:0; transform: translateY(14px); }
+  to  { opacity:1; transform: translateY(0); }
+}
+
+/* =========================
+   Responsive
+   ========================= */
+
+/* Apilar KPI + calendario y centrar filtro debajo en móviles */
+@media (max-width: 900px){
+  .content-row{
+    grid-template-columns: 1fr;     /* apila KPI y calendario */
+  }
+  .kpi-left{
+    /* KPI en varias columnas si hay ancho */
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
+/* Controles más compactos */
+@media (max-width: 780px){
+  .add-task-btn{ min-width: 160px; }
+  .kpi-card{
+    row-gap: 4px;
+    column-gap: 12px;
+    padding: 10px 12px;
+    min-height: 96px;
+  }
+}
+
+/* Teléfonos pequeños */
+@media (max-width: 779px){
+  .branch-filter select{ min-width: 0; width: 100%; }
+  .kpi-card{
+    grid-template-columns: 1fr 1fr;
+  }
+  .kpi-card > .kpi-title:first-child{
+    font-size: 1rem;
+    width: 100%;
+  }
+}
+
+/* ==========================================================
+   === Estilos añadidos para chips verdes e íconos + lista ===
+   ========================================================== */
+
+/* Reconfigurar la tarjeta para nuestro layout (sucursal + chips + lista) */
+.kpi-card{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  row-gap: 10px;
+}
+
+/* Encabezado de sucursal */
+.kpi-branch{
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--slate);
+}
+
+/* Chips KPI (verdes) */
+.kpi-chip{
+  position: relative;
+  background: linear-gradient(180deg, #1fa463, #168e53);
+  color: #fff;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 12px 14px 14px 14px;
+}
+.kpi-chip .chip-legend{
+  font-size: .78rem;
+  font-weight: 700;
+  opacity: .95;
+  display: block;
+}
+.kpi-chip .chip-value{
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: .2px;
+  margin-top: 2px;
+}
+.kpi-chip .chip-icon{
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.18));
+  opacity: .95;
+}
+
+/* Tarjeta “Pagos del día” */
+.kpi-daycard{
+  background: #fff;
+  border: 1px solid #ede9e2;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 12px 14px;
+}
+.kpi-daycard-title{
+  font-weight: 800;
+  color: var(--slate);
+  margin-bottom: 8px;
+}
+.kpi-checklist{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.kpi-checklist li{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--slate);
+}
+.kpi-checklist li::before{
+  content: "✔";
+  display: inline-grid;
+  place-items: center;
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  background: #e7f7ee;
+  color: #1fa463;
+  font-size: .85rem;
+  font-weight: 800;
+}
+.kpi-checklist li.muted{
+  color: #94a3b8;
+}
+
+/* === Forzar que TODO dentro de la tarjeta KPI se apile en columna === */
+.kpi-card{
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px;            /* separación vertical entre los bloques */
+}
+
+/* Asegurar que cada bloque ocupe el ancho completo */
+.kpi-card .kpi-branch,
+.kpi-card .kpi-chip,
+.kpi-card .kpi-daycard{
+  width: 100%;
+}
+
+
+/* ===== Selector de Sucursal ===== */
+.branch-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto; /* empuja hacia la derecha */
+  margin-top: 20px;
+}
+
+.branch-selector__label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.branch-selector__select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 0.9rem;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.branch-selector__select:hover {
+  border-color: #007bff;
+}
+
+.branch-selector__select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* ===== Checklist Pagos del día ===== */
+.kpi-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.kpi-checklist li {
+  margin-bottom: 4px;
+}
+
+.pago-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1.01rem;
+  color: #333;
+}
+
+.pago-item input[type="checkbox"] {
+  accent-color: #28a745; /* verde */
+  cursor: pointer;
+}
+
+.pago-item.checked span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* ===== Reset estilo raro de checkbox ===== */
+.pago-item input[type="checkbox"] {
+  appearance: none;       /* quita estilos del navegador */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #666;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background-color: #fff;
+  vertical-align: middle;
+  transition: all 0.2s ease-in-out;
+}
+
+.pago-item input[type="checkbox"]:checked {
+  background-color: #fafafa;
+  border-color: #28a745;
+}
+
+.pago-item input[type="checkbox"]:checked::after {
+  content: "✔";
+  color: #fff;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -58%);
+}
+
+/* Texto tachado cuando está checkeado */
+.pago-item.checked span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* ==== Quitar cualquier ícono/emoji inyectado en Pagos del día ==== */
+.kpi-daycard,
+.kpi-daycard * {
+  background-image: none !important;
+  font-size: 1.05rem;
+}
+
+/* Sin viñetas ni marcadores */
+.kpi-daycard .kpi-checklist,
+.kpi-daycard .kpi-checklist li {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* Apaga cualquier pseudo-elemento previo */
+.kpi-daycard::before,
+.kpi-daycard::after,
+.kpi-daycard .kpi-checklist li::before,
+.kpi-daycard .kpi-checklist li::after,
+.kpi-daycard .kpi-daycard-title::before,
+.kpi-daycard .kpi-daycard-title::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+}
+
+/* (opcional) asegura alineación limpia del checkbox + texto */
+.kpi-daycard .kpi-checklist li label.pago-item {
+  padding-left: 0 !important;
+}
+
+
+/* =========================
+   Responsive: móviles chicos (≈360px)
+   ========================= */
+@media (max-width: 400px) {
+  /* Apilar KPI y calendario en columna */
+  .content-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;          /* espacio entre KPI y calendario */
+  }
+
+  /* KPI ocupa todo el ancho */
+  .kpi-left {
+    width: 100%;
+  }
+
+  .kpi-card {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Calendario ocupa todo el ancho disponible */
+  .home-calendar-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto;
+    border-radius: 12px;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  /* Asegura que el contenido interno del calendario no desborde */
+  .home-calendar-card * {
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+}
+
+
+/* ===== Estilo base del botón (desktop y general) ===== */
+.add-task-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #e6e6e6;
+  background: #ffffff;
+  color: #111;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  transition: transform .05s ease, box-shadow .2s ease;
+  white-space: nowrap; /* evita salto de línea en desktop */
+}
+
+.add-task-btn:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* ===== Responsivo: móviles (≈360px) ===== */
+@media (max-width: 400px) {
+  /* Permite que header y botón se acomoden uno debajo del otro */
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* El header ocupa toda la fila */
+  .home-header {
+    flex: 1 1 100%;
+  }
+
+  /* El botón ocupa toda la siguiente fila, 100% de ancho */
+  .add-task-btn {
+    flex: 1 1 100%;
+    width: 100%;
+    margin: 0;            /* sin empujes laterales */
+    white-space: normal;  /* permite que el texto fluya si hace falta */
+  }
+}
+
+@media (max-width: 400px) {
+  .topbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Forzamos orden en móvil */
+  .add-task-btn {
+    order: 1;   /* aparece primero */
+    width: 100%;
+  }
+
+  .branch-selector {
+    order: 2;   /* aparece después */
+    width: 100%;
+  }
+
+  .home-header {
+    order: 0;   /* el título sigue arriba */
+  }
+}
+
+
+/* ==== 1) Desktop: asegurar grid + botón a la derecha ==== */
+@media (min-width: 401px) {
+  .topbar {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;  /* Título | Botón */
+    grid-template-areas:
+      "title addbtn"
+      "branch branch";
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Áreas del grid (sirve si el botón está FUERA del header) */
+  .home-header { grid-area: title; }
+  .add-task-btn { 
+    grid-area: addbtn; 
+    justify-self: end;   /* alinea a la derecha */
+  }
+  .branch-filter,
+  .branch-selector {      /* por si usas .branch-selector en lugar de .branch-filter */
+    grid-area: branch;
+    justify-content: center;
+  }
+
+  /* Más especificidad por si había reglas previas */
+  .topbar > .add-task-btn { justify-self: end; }
+}
+
+/* ==== 2) Fallback: si el botón está DENTRO del header ==== */
+@media (min-width: 401px) {
+  .home-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .home-header h1 { 
+    flex: 1;                   /* el título empuja */
+  }
+  .home-header .add-task-btn {
+    margin-left: auto;         /* y el botón se va a la derecha */
+  }
+}
+
+/* ==== 3) Móvil: orden título -> botón -> sucursal (tu pedido) ==== */
+@media (max-width: 400px) {
+  .topbar { 
+    display: flex !important; 
+    flex-direction: column; 
+    gap: 10px; 
+  }
+  .home-header { order: 0; width: 100%; }
+  .add-task-btn { order: 1; width: 100%; }
+  .branch-filter, .branch-selector { order: 2; width: 100%; }
+}
+
+
+/* Normalizar altura y alineación del botón y selector */
+.add-task-btn,
+.branch-selector__select {
+  height: 44px;               /* misma altura */
+  font-size: 0.95rem;         /* mismo tamaño de texto */
+  padding: 0 14px;            /* padding uniforme */
+  box-sizing: border-box;     /* asegura que respeten altura */
+  display: flex;
+  align-items: center;        /* centra el texto verticalmente */
+}
+
+.branch-selector {
+  display: flex;
+  align-items: center;        /* alinea label + select */
+  gap: 0.5rem;
+  margin-bottom: 21px;
+}

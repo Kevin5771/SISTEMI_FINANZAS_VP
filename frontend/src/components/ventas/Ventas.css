@@ -1,0 +1,204 @@
+:root{
+  --primary:#14B866;
+  --dark:#0F3D2E;
+  --accent:#FF7A00;
+  --cream:#FFF7ED;
+  --slate:#1F2937;
+
+  --radius:14px;
+  --shadow:0 20px 60px rgba(0,0,0,.08);
+}
+
+/* Layout general */
+.ventas-shell{
+  width:100%;
+  padding: 8px clamp(12px, 2.8vw, 28px);
+}
+
+/* Header: título + acciones a la derecha */
+.ventas-header{
+  display:flex; align-items:center; gap:16px;
+  justify-content:space-between;
+  margin-bottom: 10px;
+}
+.ventas-header h1{
+  margin:0; color:var(--dark);
+  font-size: clamp(24px, 4.2vw, 44px);
+  font-weight:800; letter-spacing:.2px;
+}
+
+/* Botones principales */
+.ventas-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+.btn{
+  background:#fff;
+  border:1px solid #e7e2d9;
+  color:var(--slate);
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+.btn:hover{
+  background:#f9fafb;
+  color: black;
+}
+.btn-primary{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+}
+.btn-primary:hover{ filter:brightness(.98); }
+.btn-accent{
+  display: flex;
+  background:var(--accent);
+  justify-content:flex-end;
+  margin-top: 10px;
+  color:#fff;
+}
+.btn-accent:hover{ filter:brightness(.98); }
+
+/* Filtros */
+.ventas-filtros{
+  display:flex; gap:18px; align-items:end; flex-wrap:wrap;
+  margin: 8px 0 16px;
+}
+.filtro{ display:flex; flex-direction:column; gap:6px; }
+.filtro label{ font-weight:700; color:var(--dark); }
+.filtro select, .filtro input[type="date"]{
+  border:1px solid #e7e2d9; border-radius:12px;
+  padding:10px 12px; background:#f9fafb; color:var(--slate);
+  min-width: 220px;
+}
+
+/* Tabla */
+.ventas-tabla-wrap{ width:min(1500px, 100%); margin:0 auto; }
+.ventas-tabla{
+  width:100%;
+  border-collapse: collapse;
+  background:#fff; border:1px solid #e7e2d9; border-radius:14px; overflow:hidden;
+  box-shadow: var(--shadow);
+}
+.ventas-tabla thead th{
+  background:#15824C; color:#fff; text-align:center;
+  padding:14px; font-size:1.05rem;
+}
+.ventas-tabla td{
+  padding:14px; border-top:1px solid #f0ece6; text-align:center;
+  color:var(--slate);
+}
+.ventas-tabla .acciones{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.btn-min{
+  padding:8px 12px; border-radius:10px; border:1px solid #e7e2d9;
+  background:#fff; font-weight:700; cursor:pointer;
+}
+.btn-min:hover{ background:#f9fafb; }
+.btn-min.danger{ border-color:#eab0b0; color:#b42323; }
+.empty{ padding:28px; color:#6b7280; }
+
+/* Paneles detalle */
+.detalle-cuadre{
+  width:min(1100px, 100%); margin:18px auto 0;
+  background:#fff; border:1px solid #e7e2d9; border-radius:14px;
+  padding:16px; box-shadow: var(--shadow);
+}
+.detalle-cuadre h2{
+  margin:0 0 14px; color:var(--dark); border-bottom:1px solid #f0ece6; padding-bottom:10px;
+}
+.panel{ margin-top:16px; }
+.panel-title{ font-weight:800; color:var(--dark); margin-bottom:10px; }
+.grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+
+.footer-section{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.acciones-actualizar{ text-align:center; margin-top:16px; }
+
+/* Modal */
+.modal-mask{
+  position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.45); z-index:1000;
+}
+.modal-card{
+  width:min(520px, 92vw); background:#fff; border:1px solid #e7e2d9; border-radius:14px;
+  padding:16px; box-shadow: var(--shadow);
+}
+.modal-body{ margin:10px 0; }
+.modal-list{ max-height:300px; overflow:auto; display:flex; flex-direction:column; gap:6px; padding:6px; background:#f9fafb; border:1px solid #eee; border-radius:12px; }
+.modal-actions{ display:flex; justify-content:flex-end; gap:8px; }
+
+/* Responsive helpers */
+@media (max-width: 900px){
+  .ventas-kpis{ grid-template-columns:1fr; }
+  .grid{ grid-template-columns: 1fr; }
+  .footer-section{ grid-template-columns:1fr; }
+}
+
+/* ===== Ventas: responsive Historial de Cuadres ===== */
+
+/* Scroll de seguridad en anchos medianos */
+.ventas-tabla-wrap { overflow-x: auto; }
+
+/* Evitar desbordes feos */
+.ventas-tabla td { overflow-wrap:anywhere; word-break:break-word; }
+
+/* Móvil: ocultar thead y convertir filas en cards */
+/* ===== Ventas: responsive Historial de Cuadres ===== */
+
+@media (max-width:760px){
+
+  .ventas-tabla thead{
+    border:0; clip:rect(0 0 0 0); height:1px; margin:-1px; overflow:hidden;
+    padding:0; position:absolute; width:1px;
+  }
+
+  .ventas-tabla,
+  .ventas-tabla tbody,
+  .ventas-tabla tr,
+  .ventas-tabla td{
+    display:block; width:100%;
+  }
+
+  .ventas-tabla tr{
+    background:#fff;
+    margin:10px 0;
+    border:1px solid #e7e2d9;
+    border-radius:12px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .ventas-tabla td{
+    text-align:left;
+    border-top:1px solid #f0ece6;
+    padding:12px 14px 12px calc(14px + 140px);
+    position:relative;
+    min-height:44px;
+    color:var(--slate);
+  }
+  .ventas-tabla td:first-child{ border-top:none; }
+
+  /* ★ Usa SIEMPRE el data-label del TD (coincide con tus headers) */
+  .ventas-tabla td::before{
+    content: attr(data-label) !important;
+    position:absolute;
+    left:14px; top:50%;
+    transform: translateY(-50%);
+    font-weight:800; color:var(--dark);
+    width:130px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* (Opcional) elimina el fallback por posición:
+  .ventas-tabla td:nth-child(1)::before{ content:'Fecha'; }
+  .ventas-tabla td:nth-child(2)::before{ content:'Sucursal'; }
+  .ventas-tabla td:nth-child(3)::before{ content:'Usuario'; }
+  .ventas-tabla td:nth-child(4)::before{ content:'Efectivo'; }
+  .ventas-tabla td:nth-child(5)::before{ content:'Tarjeta'; }
+  .ventas-tabla td:nth-child(6)::before{ content:'Motorista'; }
+  .ventas-tabla td:nth-child(7)::before{ content:'Total a depositar'; }
+  .ventas-tabla td:nth-child(8)::before{ content:'Hora'; }
+  .ventas-tabla td:nth-child(9)::before{ content:'Acciones'; }
+  */
+
+  .ventas-tabla .acciones{ justify-content:flex-start; flex-wrap:wrap; }
+}
+
+.ventas-tabla td.text-right{ text-align:right; }
+

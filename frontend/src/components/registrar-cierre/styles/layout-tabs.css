@@ -1,0 +1,58 @@
+/* ===== Reportes (pestañas como navegador, pegadas al ArqueoGrid) ===== */
+.rc-tabs-row{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:0px;
+  margin: 20px 0 0;
+  position: relative;
+  z-index: 2;  
+  margin-left: 15px;
+}
+.rc-tabs{
+  display:flex;
+  align-items:center;
+  gap:0px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  flex: 1 1 auto;
+  padding: 2 2px;
+}
+.rc-tabs::-webkit-scrollbar{ display:none; }
+.rc-tabs-actions{ flex: 0 0 auto; display:flex; align-items:center; }
+
+.rc-tabs-browser .rc-tab{
+  position: relative;
+  border:1px solid #e7e2d9;
+  border-bottom: 0;
+  border-radius: 14px 14px 0 0;
+  padding: 9px 16px;
+  background:#f3f5f7;
+  font-weight:800;
+  color:var(--slate);
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  transition: background .2s ease, transform .05s ease, box-shadow .2s ease;
+  margin-bottom: -1px;
+}
+.rc-tabs-browser .rc-tab:hover{
+  background:#eef2f4;
+  transform: translateY(-1px);
+}
+.rc-tabs-browser .rc-tab.active{
+  background:#fff;
+  color:var(--dark);
+  border-color:#e7e2d9;
+  box-shadow:none;
+  z-index: 3;
+}
+.rc-tabs-browser .rc-tab.active::after{ content: none; }
+
+.rc-tabs-attached + .rc-grid > .rc-card:first-child,
+.rc-tabs-attached + .rc-card{
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  margin-top: 0;
+}
+.rc-tabs-attached + .rc-grid { margin-top: 0; }

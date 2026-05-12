@@ -1,0 +1,344 @@
+:root{
+  --primary:#14B866;
+  --dark:#0F3D2E;
+  --slate:#1F2937;
+  --accent:#FF7A00;
+  --muted:#6b7280;
+
+  --radius:14px;
+  --shadow:0 20px 60px rgba(0,0,0,.08);
+}
+
+/* ===== Layout base (coherente con Ventas) ===== */
+.ventas-shell{
+  width:100%;
+  padding: 8px clamp(12px, 2.8vw, 28px);
+}
+.ventas-header{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom: 10px;
+}
+.ventas-header h1{
+  margin:0; color:var(--dark);
+  font-size: clamp(24px, 4.2vw, 44px);
+  font-weight:800; letter-spacing:.2px;
+}
+
+/* Filtros */
+.ventas-filtros{
+  display:flex; gap:18px; align-items:end; flex-wrap:wrap;
+  margin: 8px 0 16px;
+}
+.filtro{ display:flex; flex-direction:column; gap:6px; }
+.filtro label{ font-weight:700; color:var(--dark); }
+.filtro select, .filtro input[type="date"]{
+  border:1px solid #e7e2d9; border-radius:12px;
+  padding:10px 12px; background:#f9fafb; color:var(--slate);
+  min-width: 220px;
+}
+
+/* ===== Cards ===== */
+.rc-card{
+  background:#fff;
+  border:1px solid #e7e2d9;
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+  overflow-x:auto; /* fallback de scroll horizontal si hace falta */
+}
+.rc-card-hd{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:10px;
+}
+.rc-card-hd h3{
+  margin:0; font-weight:800; color:var(--dark);
+}
+
+/* ===== Botones ===== */
+.rc-btn{
+  background:#fff;
+  border:1px solid #e7e2d9;
+  color:var(--slate);
+  padding:8px 12px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+.rc-btn:hover{ background:#f9fafb; color:#000; }
+.rc-btn-primary{
+  background:var(--primary); color:#fff; border-color:var(--primary);
+}
+.rc-btn-primary:hover{ filter:brightness(.98); }
+.rc-btn-accent{
+  background:var(--accent); color:#fff; border-color:var(--accent);
+}
+.rc-btn-accent:hover{ filter:brightness(.98); }
+.rc-btn-outline{
+  background:#fff; color:var(--slate); border-color:#e7e2d9;
+}
+.rc-btn-ghost{
+  background:transparent; border-color:transparent; color:var(--slate);
+}
+.rc-btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+/* ===== Inputs ===== */
+.rc-input{
+  border:1px solid #e7e2d9; border-radius:12px;
+  padding:8px 10px; background:#f9fafb; color:var(--slate);
+}
+.rc-input:focus{ outline:none; box-shadow:0 0 0 3px rgba(20,184,102,.15); }
+.rc-qty{ text-align:right; }
+.no-spin::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
+/* 🔧 FIX: agrega estándar + mantiene prefijo para Firefox */
+.no-spin{
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ===== Tabla base ===== */
+.rc-table{
+  width:100%;
+  border-collapse: collapse;
+  background:#fff;
+  border:1px solid #e7e2d9;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow: var(--shadow);
+}
+.rc-table thead th{
+  background:#15824C; color:#fff; text-align:center;
+  padding:14px; font-size:1.05rem;
+}
+.rc-table td{
+  padding:14px; border-top:1px solid #f0ece6; text-align:center;
+  color:var(--slate);
+}
+/* Ajuste de números a la derecha en lista principal (coincide con tu JSX) */
+.rc-table td.text-right{ text-align:right; }
+
+/* 🔧 FIX: quiebre robusto para textos largos (fallbacks + anywhere moderno) */
+.rc-table td{
+  overflow-wrap: break-word;   /* estándar */
+  word-wrap: break-word;       /* legacy */
+  overflow-wrap: anywhere;     /* moderno */
+  word-break: break-word;      /* fallback adicional */
+}
+
+.rc-empty{ padding:14px; color:var(--muted); text-align:center; }
+
+/* ===== Modal (reemplaza el <style> inline) ===== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.35);
+  display: grid; place-items: center; z-index: 9999;
+}
+.modal {
+  background: #fff; border-radius: 12px; width: min(980px, 96vw);
+  box-shadow: 0 8px 30px rgba(0,0,0,.15); border: 1px solid #e7e2d9;
+  max-height: 90vh; display:flex; flex-direction:column;
+}
+.modal-hd { padding: 12px 16px; border-bottom: 1px solid #eee; display:flex; justify-content: space-between; align-items:center; }
+.modal-bd { padding: 12px 16px; }
+.modal-ft { padding: 12px 16px; border-top: 1px solid #eee; }
+
+/* ===== Responsive: tablas apiladas ===== */
+/* 1) Tabla principal (fuera de modales): Fecha / Sucursal / Items / Total utilizado / Sobrante / Acciones */
+@media (max-width:760px){
+  /* Oculta encabezados */
+  section.rc-card > table.rc-table thead{
+    border:0; clip:rect(0 0 0 0); height:1px; margin:-1px; overflow:hidden;
+    padding:0; position:absolute; width:1px;
+  }
+
+  /* Tabla -> bloques */
+  section.rc-card > table.rc-table,
+  section.rc-card > table.rc-table tbody,
+  section.rc-card > table.rc-table tr,
+  section.rc-card > table.rc-table td{
+    display:block; width:100%;
+  }
+
+  /* Fila como card */
+  section.rc-card > table.rc-table tr{
+    background:#fff;
+    margin:10px 0;
+    border:1px solid #e7e2d9;
+    border-radius:12px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  /* Celdas con label */
+  section.rc-card > table.rc-table td{
+    text-align:left;
+    border-top:1px solid #f0ece6;
+    padding:12px 14px 12px calc(14px + 150px);
+    position:relative;
+    min-height:44px;
+  }
+  section.rc-card > table.rc-table td:first-child{ border-top:none; }
+
+  /* Labels por columna (sin cambiar tu JSX) */
+  section.rc-card > table.rc-table td:nth-child(1)::before{ content:'Fecha'; }
+  section.rc-card > table.rc-table td:nth-child(2)::before{ content:'Sucursal'; }
+  section.rc-card > table.rc-table td:nth-child(3)::before{ content:'Items'; }
+  section.rc-card > table.rc-table td:nth-child(4)::before{ content:'Total utilizado'; }
+  section.rc-card > table.rc-table td:nth-child(5)::before{ content:'Sobrante p/ mañana'; }
+  section.rc-card > table.rc-table td:nth-child(6)::before{ content:'Acciones'; }
+
+  section.rc-card > table.rc-table td::before{
+    position:absolute;
+    left:14px; top:50%;
+    transform: translateY(-50%);
+    font-weight:800; color:var(--dark);
+    width:136px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* Botones compactos en móvil */
+  .rc-btn{ padding:8px 10px; }
+}
+
+/* 2) Tablas dentro de MODALES (Viewer y Editor)
+   Viewer: Descripción / Monto / Ref / Categoría / Adjunto (5 cols)
+   Editor: Descripción / Monto / Ref / Categoría / Adjunto / Acciones (6 cols) */
+@media (max-width:760px){
+  .modal .rc-table thead{
+    border:0; clip:rect(0 0 0 0); height:1px; margin:-1px; overflow:hidden;
+    padding:0; position:absolute; width:1px;
+  }
+
+  .modal .rc-table,
+  .modal .rc-table tbody,
+  .modal .rc-table tr,
+  .modal .rc-table td{
+    display:block; width:100%;
+  }
+
+  .modal .rc-table tr{
+    background:#fff;
+    margin:10px 0;
+    border:1px solid #e7e2d9;
+    border-radius:12px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .modal .rc-table td{
+    text-align:left;
+    border-top:1px solid #f0ece6;
+    padding:12px 14px 12px calc(14px + 140px);
+    position:relative;
+    min-height:44px;
+  }
+  .modal .rc-table td:first-child{ border-top:none; }
+
+  /* Labels (valen para 5 o 6 columnas) */
+  .modal .rc-table td:nth-child(1)::before{ content:'Descripción'; }
+  .modal .rc-table td:nth-child(2)::before{ content:'Monto'; }
+  .modal .rc-table td:nth-child(3)::before{ content:'Ref'; }
+  .modal .rc-table td:nth-child(4)::before{ content:'Categoría'; }
+  .modal .rc-table td:nth-child(5)::before{ content:'Adjunto'; }
+  .modal .rc-table td:nth-child(6)::before{ content:'Acciones'; }
+
+  /* Inputs a 100% en editor */
+  .modal .rc-input{ width:100%; }
+}
+
+/* ===== Pequeños detalles ===== */
+.rc-btn.rc-btn-accent[title="Solo admin"]{ opacity:.6; }
+
+/* ====== HistorialPagos: tabla y botones estilo HistorialCuadres ====== */
+
+/* Wrapper con scroll seguro */
+.ventas-tabla-wrap{
+  width:min(1500px, 100%);
+  margin:0 auto;
+  overflow-x:auto;
+}
+
+/* Tabla (mismo look que tu rc-table) */
+.ventas-tabla{
+  width:100%;
+  border-collapse: collapse;
+  background:#fff;
+  border:1px solid #e7e2d9;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow: var(--shadow);
+}
+.ventas-tabla thead th{
+  background:#15824C; color:#fff; text-align:center;
+  padding:14px; font-size:1.05rem;
+}
+.ventas-tabla td{
+  padding:14px; border-top:1px solid #f0ece6; text-align:center;
+  color:var(--slate);
+  /* 🔧 FIX: quiebre robusto para textos largos */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.ventas-tabla td.text-right{ text-align:right; }
+
+/* Contenedor de acciones por fila */
+.acciones{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+
+/* Botones pequeños por fila (igual que en Ventas) */
+.btn-min{
+  padding:8px 12px; border-radius:10px; border:1px solid #e7e2d9;
+  background:#fff; font-weight:700; cursor:pointer;
+}
+.btn-min:hover{ background:#f9fafb; }
+.btn-min.danger{ border-color:#eab0b0; color:#b42323; }
+
+/* ===== Responsive: tabla principal -> cards (para ventas-tabla) ===== */
+@media (max-width:760px){
+  .ventas-tabla thead{
+    border:0; clip:rect(0 0 0 0); height:1px; margin:-1px; overflow:hidden;
+    padding:0; position:absolute; width:1px;
+  }
+
+  .ventas-tabla,
+  .ventas-tabla tbody,
+  .ventas-tabla tr,
+  .ventas-tabla td{ display:block; width:100%; }
+
+  .ventas-tabla tr{
+    background:#fff;
+    margin:10px 0;
+    border:1px solid #e7e2d9;
+    border-radius:12px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .ventas-tabla td{
+    text-align:left;
+    border-top:1px solid #f0ece6;
+    padding:12px 14px 12px calc(14px + 150px); /* ancho del label */
+    position:relative;
+    min-height:44px;
+  }
+  .ventas-tabla td:first-child{ border-top:none; }
+
+  /* Usa data-label si está presente; si no, fallback por índice */
+  .ventas-tabla td::before{
+    content: attr(data-label);
+    position:absolute; left:14px; top:50%;
+    transform: translateY(-50%);
+    font-weight:800; color:var(--dark);
+    width:136px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* Fallback (por si olvidas data-label) */
+  .ventas-tabla tr td:nth-child(1)::before{ content: 'Fecha'; }
+  .ventas-tabla tr td:nth-child(2)::before{ content: 'Sucursal'; }
+  .ventas-tabla tr td:nth-child(3)::before{ content: 'Items'; }
+  .ventas-tabla tr td:nth-child(4)::before{ content: 'Total utilizado'; }
+  .ventas-tabla tr td:nth-child(5)::before{ content: 'Sobrante p/ mañana'; }
+  .ventas-tabla tr td:nth-child(6)::before{ content: 'Acciones'; }
+
+  .acciones{ justify-content:flex-start; }
+}

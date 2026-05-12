@@ -1,0 +1,311 @@
+/* Cards y grid */ 
+.rc-grid{ 
+  display:grid; 
+  grid-template-columns: 1fr; 
+  gap:16px; 
+}
+
+.rc-grid-bottom{ 
+  margin-top: 18px; 
+  display:grid; 
+  grid-template-columns: 1fr; 
+  gap:16px; 
+}
+
+.rc-bill-ico { color: gray; }
+
+.rc-card{
+  background:#fff; 
+  border:1px solid #e7e2d9; 
+  border-radius:var(--radius);
+  padding:16px; 
+  box-shadow: var(--shadow);
+}
+.rc-card h3{ margin-bottom: 10px; color:var(--dark); }
+
+/* Cabecera global del card (título + caja chica) */
+.rc-card-hd{ 
+  display:flex; 
+  align-items:center; 
+  justify-content:space-between; 
+  margin-bottom:10px; 
+}
+
+/* Sheets de 3 columnas */
+.rc-sheet{ 
+  display:grid; 
+  gap:16px; 
+}
+
+/* Desktop: más holgura para que los números respiren */
+.rc-sheet-3cols{ 
+  grid-template-columns: repeat(3, minmax(290px, 1fr)); 
+}
+
+.rc-col{ 
+  border:1px solid #f0ece6; 
+  border-radius:12px; 
+  padding:12px; 
+  background:#f9fafb; 
+  min-width: 0;                 /* evita overflow en hijos */
+}
+
+/* Cabecera por caja (título centrado arriba, apertura a la derecha abajo) */
+.rc-col-hd{
+  width: 100% !important;
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  text-align: center;
+}
+.rc-col-hd > span:first-child{
+  font-size: clamp(18px, 2.1vw, 24px);
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 4px;
+  align-self: center;
+}
+
+/* Fila de apertura (Q. + input) alineada a la derecha */
+.rc-col-open{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.rc-col-open .rc-input{
+  width: clamp(160px, 22vw, 220px);
+  text-align: right;
+  max-width: 100%;
+}
+.rc-col-open .rc-cell-label{ 
+  color:#6b7280; 
+  font-weight:700; 
+}
+
+/* Variante reforzada por si hay reglas previas compitiendo */
+.rc-col .rc-col-hd.rc-col-hd--stack{ display:flex !important; }
+.rc-col .rc-col-hd.rc-col-hd--stack > .rc-col-open{
+  width:100% !important; justify-content:flex-end !important;
+}
+
+/* Fila genérica */
+.rc-row{ 
+  display:flex; 
+  align-items:center; 
+  justify-content:space-between; 
+  gap:10px; 
+  padding:6px 0; 
+  min-width: 0;
+}
+.rc-row-sep{ border-top:1px dashed #e2dfd8; margin:8px 0; }
+
+.rc-cell-label{ color:#6b7280; font-weight:700; }
+.rc-cell-label.strong{ color:var(--dark); }
+
+.rc-input{
+  width:90px; max-width: 35%;
+  padding:8px 10px; 
+  border:1px solid #e0ded7; 
+  border-radius:10px;
+  background:#fff; color:#1F2937;
+}
+.rc-select{ width:200px; }
+
+/* Contenedor para “Q. (input)” en Tarjeta/Domicilio */
+.rc-money-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:4px;
+  flex: 1 1 260px;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  
+}
+.rc-money-wrap .rc-input{
+  width: clamp(160px, 22vw, 220px);   /* = Apertura */
+  max-width: 100%;
+  text-align: right;
+}
+
+/* ===== Total de caja: dos líneas ===== */
+.rc-total-caja{
+  padding: 10px 12px;
+  font-size: 1.2rem;
+  margin-top: 6px;
+  white-space: nowrap;   
+}
+
+.rc-total-line{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* label izq, monto der */
+  gap: 10px;
+}
+
+.rc-total-note{
+  display: block;
+  margin-top: 4px;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* Prefijo y monto (reusa tu money-wrap con un tweak) */
+.rc-money-wrap--total{
+  gap: 10px;
+  width: auto;                   
+}
+.rc-prefix{ color:#6b7280; font-weight:700; }
+
+/* Monto grande y bien alineado */
+.rc-total-amount{
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+.rc-label-card,
+  .rc-label-moto {
+    flex: 1 1 auto;          
+    white-space: nowrap;   
+  }
+
+/* ============ RESPONSIVE ============ */
+
+/* Tablets/medianas: 2 columnas confortables */
+@media (max-width: 1200px){
+  .rc-sheet-3cols{
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+  }
+}
+
+/* Teléfonos ~720px: 2 columnas si caben */
+@media (max-width: 720px){
+  .rc-sheet-3cols{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Teléfonos <720px: 1 columna */
+@media (max-width: 719px){
+  .rc-sheet-3cols{ grid-template-columns: 1fr; }
+  .rc-col{ padding:10px; }
+  .rc-card{ padding:12px; }
+  .rc-col-hd > span:first-child{ font-size:18px; }
+}
+
+/* ≤555px: sin scroll horizontal, todo fluido */
+@media (max-width: 555px){
+  .rc-row img{
+      width: 30px !important;
+      height: 30px !important;
+    }
+
+  .rc-sheet-3cols{ grid-template-columns: 1fr !important; }
+
+  .rc-col{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    padding:10px;
+    overflow-x:hidden;
+  }
+
+  /* caja chica y monto */
+  .rc-card-hd{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:8px !important;
+    font-size: 0.90rem;
+  }
+
+  .rc-card-hd > h3{
+    margin:0 0 2px 0 !important;
+    text-align:center !important; /* pon left si prefieres */
+  }
+
+  /* Titulo cajas */
+  .rc-col-hd > span:first-child{
+    font-size: 1.4rem;
+  }
+  .rc-card-hd > div:last-child{
+    width:100% !important;
+    display:flex !important;
+    justify-content:flex-end !important;
+    align-items:center !important;
+    gap:6px !important;
+    flex-wrap:wrap;
+  }
+
+  /* Apertura y money inputs llenan el ancho disponible */
+  .rc-col-open{ width:100% !important; }
+  .rc-col-open .rc-input{ 
+    width:100% !important; 
+    max-width:100% !important; }
+
+  .rc-money-wrap{
+    width:50% !important; 
+    max-width:100% !important; 
+  }
+  .rc-row .rc-input{
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box;
+  }
+  .rc-total-caja{ 
+    padding: 10px; 
+    font-size: 0.90rem;
+  }
+
+  .rc-total-line{ 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;        /* << no permitas salto */
+    gap: 6px;
+    min-width: 0;
+    font-size: 1rem; 
+  }
+
+   /* Lado izquierdo: "Total de caja" */
+  .rc-total-line .rc-cell-label{
+    flex: 1 1 auto;           /* ocupa el espacio disponible */
+    min-width: 0;
+    white-space: nowrap;      /* no partir palabras */
+  }
+
+  /* Lado derecho: "Q. 123" */
+  .rc-money-wrap--total{
+    flex: 0 0 auto;           /* tamaño al contenido, no crecer */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    white-space: nowrap;      /* evita salto entre Q. y el número */
+    max-width: 70%;           /* evita que empuje al label */
+  }
+
+  .rc-prefix{ margin-right: 2px; }
+
+  .rc-total-amount{
+    overflow: hidden;
+    text-overflow: ellipsis;  /* si el número es larguísimo, se recorta elegante */
+    font-size: 1rem; 
+  }
+
+  .rc-total-note{ font-size: 0.9rem; }
+
+  .rc-label-card,
+  .rc-label-moto {
+    font-size: 0.85rem !important;  
+    flex: 1 1 auto;          
+    white-space: nowrap;   
+  }
+}

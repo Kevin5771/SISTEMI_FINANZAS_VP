@@ -1,0 +1,207 @@
+:root{
+  --primary:#14B866;
+  --dark:#0F3D2E;
+  --slate:#1F2937;
+  --accent:#FF7A00;
+
+  --radius:14px;
+  --shadow:0 20px 60px rgba(0,0,0,.08);
+}
+
+/* Contenedor general, coherente con Ventas */
+.usuarios-shell{
+  width:100%;
+  padding: 8px clamp(12px, 2.8vw, 28px);
+}
+
+.usuarios-header{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom: 10px;
+}
+.usuarios-header h1{
+  margin:0; color:var(--dark);
+  font-size: clamp(24px, 4.2vw, 44px);
+  font-weight:800; letter-spacing:.2px;
+}
+
+/* Panels apilados (registro y listado) */
+.usuarios-panels{
+  display:flex; flex-direction:column; gap:14px;
+  width:min(1100px, 100%); margin:0 auto;
+}
+
+.card{
+  background:#fff;
+  border:1px solid #e7e2d9;
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+}
+.card-title{
+  margin:0 0 12px; color:var(--dark);
+  border-bottom:1px solid #f0ece6; padding-bottom:8px;
+  font-weight:800;
+}
+
+/* Form registro */
+.form-usuario{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap:12px;
+}
+.form-row{ display:flex; flex-direction:column; gap:6px; }
+.form-row label{ font-weight:700; color:var(--dark); }
+.form-row input, .form-row select{
+  border:1px solid #e7e2d9; border-radius:12px;
+  padding:10px 12px; background:#f9fafb; color:var(--slate);
+}
+.form-actions{
+  grid-column: 1 / -1;
+  display:flex; justify-content:flex-end; gap:8px; margin-top:6px;
+}
+
+/* Botones coherentes con Ventas */
+.btn{
+  background:#fff;
+  border:1px solid #e7e2d9;
+  color:var(--slate);
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+.btn:hover{ background:#f9fafb; color:#000; }
+.btn-primary{
+  background:var(--primary); color:#fff; border-color:var(--primary);
+}
+.btn-primary:hover{ filter:brightness(.98); }
+.btn-min{
+  padding:8px 12px; border-radius:10px; border:1px solid #e7e2d9;
+  background:#fff; font-weight:700; cursor:pointer;
+}
+.btn-min:hover{ background:#f9fafb; }
+.btn-min.danger{ border-color:#eab0b0; color:#b42323; }
+
+/* Acciones sobre listado */
+.acciones-usuario{
+  display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; margin-bottom:8px;
+}
+
+/* ===== Tabla responsive (Usuarios) ===== */
+
+/* Fallback de scroll en anchos medianos */
+.tabla-wrap{ overflow-x: auto; }
+
+/* Mantén los emails legibles (rompe líneas largas) */
+.tabla td:nth-child(2){ overflow-wrap: anywhere; word-break: break-word; }
+
+/* Vista "cards" en móvil */
+@media (max-width: 760px){
+  /* Oculta encabezados */
+  .tabla thead{
+    border:0; clip:rect(0 0 0 0); height:1px; margin:-1px; overflow:hidden;
+    padding:0; position:absolute; width:1px;
+  }
+
+  /* Tabla -> bloques apilados */
+  .tabla,
+  .tabla tbody,
+  .tabla tr,
+  .tabla td{
+    display:block; width:100%;
+  }
+
+  /* Cada fila como tarjeta */
+  .tabla tr{
+    background:#fff;
+    margin:10px 0;
+    border:1px solid #e7e2d9;
+    border-radius:12px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+    cursor: pointer; /* ya que la fila es seleccionable */
+  }
+
+  /* Celdas con label a la izquierda y valor a la derecha */
+  .tabla td{
+    text-align:left;
+    border-top:1px solid #f0ece6;
+    padding:12px 14px 12px calc(14px + 120px);
+    position:relative;
+    min-height:44px;
+    color:var(--slate);
+  }
+  .tabla td:first-child{ border-top:none; }
+
+  /* Labels de cada campo (sin cambiar JSX) */
+  .tabla td:nth-child(1)::before{ content:'Nombre'; }
+  .tabla td:nth-child(2)::before{ content:'Email'; }
+  .tabla td:nth-child(3)::before{ content:'Rol'; }
+  .tabla td:nth-child(4)::before{ content:'Sucursal'; }
+
+  .tabla td::before{
+    position:absolute;
+    left:14px; top:50%;
+    transform: translateY(-50%);
+    font-weight:800; color:var(--dark);
+    width:110px;
+    white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* Estado seleccionado se nota mejor en cards */
+  .tabla tr.selected{
+    background:#FFF7ED;
+    box-shadow: 0 8px 26px rgba(0,0,0,.08);
+    border-color:#f3dcc2;
+  }
+
+  /* Botones compactos si hubiera acciones dentro de la fila */
+  .btn-min{ padding:8px 10px; }
+}
+
+/* ===== Formulario apilado (siempre 1 columna) ===== */
+.form-usuario{
+  display:grid;
+  grid-template-columns: 1fr;  /* <- apilado */
+  gap:12px;
+  max-width: 720px;            /* opcional: limita ancho para mejor lectura */
+  margin-inline: auto;         /* centra el formulario dentro de la card */
+}
+
+/* Form registro (2 columnas por defecto) */
+.form-usuario{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap:12px;
+  max-width: 900px;          /* opcional: ancho legible */
+  margin-inline: auto;       /* centra el formulario dentro de la card */
+}
+
+/* Evita desbordes de inputs */
+.form-usuario .form-row{ min-width: 0; }
+.form-usuario .form-row input,
+.form-usuario .form-row select{
+  width:100%;
+}
+
+/* Acciones del formulario */
+.form-actions{
+  grid-column: 1 / -1;
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;  /* en desktop a la derecha */
+}
+
+/* Responsive: 1 columna en móvil */
+@media (max-width: 760px){
+  .form-usuario{
+    grid-template-columns: 1fr;   /* apilar */
+  }
+  .form-actions{ 
+    justify-content: stretch; 
+  }
+  .form-actions .btn{ 
+    width:100%;                    /* botones a todo lo ancho en móvil */
+  }
+}

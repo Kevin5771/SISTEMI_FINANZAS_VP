@@ -1,0 +1,289 @@
+/* ===== Gastos ===== */
+.rc-gastos { display:flex; flex-direction:column; gap:8px; }
+
+/* ===== Tabla Gastos ===== */
+.rc-gastos-table { width: 100%; border-collapse: collapse; }
+.rc-gastos-table thead th {
+  text-align: center;
+  color: #6b7280;
+  font-weight: 700;
+}
+.rc-gastos-table td { vertical-align: middle; }
+.rc-gastos-table td:nth-child(2) { text-align: left; }
+.rc-gastos-table td:not(:nth-child(2)) { text-align: center; }
+
+/* Inputs dentro de tabla llenan celda */
+.rc-gastos-table .rc-input,
+.rc-gastos-table .rc-select { width: 100%; }
+.rc-gastos-table td .rc-input,
+.rc-gastos-table td .rc-select {
+  width: 100% !important;
+  max-width: none !important;
+  display: block;
+  box-sizing: border-box;
+}
+.rc-gastos-table td:nth-child(2) .rc-input { text-align: left; }
+.rc-gastos-table td:nth-child(3) .rc-input,
+.rc-gastos-table td:nth-child(4) .rc-input { text-align: center; }
+
+/* Total row (desktop) */
+.rc-gastos-table tfoot td {
+  padding: 10px 12px;
+}
+
+
+/* Tamaño fijo del ícono a 25px (por si no pones width/height inline) */
+.rc-iconbtn img {
+  width: 25px !important;
+  height: 25px !important;
+  object-fit: contain;
+}
+
+/* Botón contenedor (puedes ajustar si quieres más compacto) */
+.rc-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #e7e2d9;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: 0;
+  cursor: pointer;
+}
+.rc-iconbtn:hover { background: #f9fafb; }
+
+.rc-proof-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+
+/* ===== Responsive Gastos (no hereda rótulos de otras tablas) ===== */
+@media (max-width: 860px){
+  .rc-gastos-table thead{
+    border:0; clip:rect(0 0 0 0); height:1px; margin:-1px; overflow:hidden;
+    padding:0; position:absolute; width:1px;
+  }
+  .rc-gastos-table colgroup{ display:none; }
+
+  .rc-gastos-table,
+  .rc-gastos-table tbody,
+  .rc-gastos-table tr,
+  .rc-gastos-table td{
+    display:block; width:100%;
+  }
+
+  .rc-gastos-table tr{
+    background:#fff;
+    margin:10px 0;
+    border:1px solid #e7e2d9;
+    border-radius:12px;
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  .rc-gastos-table td{
+    position:relative;
+    border:none;
+    border-top:1px solid #f0ece6;
+    padding:12px 14px 12px calc(14px + 140px); /* deja sitio al label fijo */
+    min-height:48px;
+    text-align:left;
+  }
+  .rc-gastos-table td:first-child{ border-top:none; }
+
+  /* 🔒 Fuerza los rótulos de ESTA tabla (usa data-label del JSX) */
+  .rc-gastos-table td::before{
+    content: attr(data-label) !important;
+    position:absolute;
+    left:14px; top:50%;
+    transform: translateY(-50%);
+    width:130px;
+    font-weight:800; color:var(--dark);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+
+  /* Botonera/comprobante en filas mobile */
+  .rc-gastos-table td:nth-child(5) > div,
+  .rc-gastos-table td:nth-child(6){
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    padding-top:12px;
+    padding-bottom:12px;
+  }
+
+  .rc-btn-primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 65%;
+  margin-left: auto; 
+  margin-top: 15px;
+}
+
+
+  /* Footer como bloque */
+  .rc-gastos-table tfoot,
+  .rc-gastos-table tfoot tr,
+  .rc-gastos-table tfoot td{ display:block; width:100%; }
+  .rc-gastos-table tfoot td{
+    border:1px solid #e7e2d9;
+    border-radius:12px;
+    margin-top:6px;
+    padding:12px 14px;
+    text-align:right;
+    background:#fff;
+    font-weight:800;
+  }
+  /* si no quieres celdas vacías extra, puedes ocultarlas */
+  .rc-gastos-table tfoot td + td + td ~ td { display:none; }
+}
+
+/* Botonera lista de gastos */
+.rc-gastos-actions { display:flex; gap:8px; flex-wrap:wrap; }
+
+/* Bloquea scroll del fondo cuando el modal está abierto */
+.rc-modal-open {
+  overflow: hidden !important;
+}
+
+/* Máscara del modal */
+.rc-modal-mask {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0,0,0,0.5) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 9999 !important;
+}
+
+/* Tarjeta del modal */
+.rc-modal-card.rc-viewer-card {
+  width: min(920px, 92vw) !important;
+  height: min(92vh, 92dvh) !important;
+  background: #fff !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,.22) !important;
+}
+
+/* Header del modal */
+.rc-modal-hd {
+  padding: 10px 12px !important;
+  border-bottom: 1px solid #eee !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  flex: 0 0 auto !important;
+}
+.rc-modal-title {
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Contenedor de la imagen con scroll interno */
+.rc-viewer-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;           /* <- permite que el hijo calcule alto correctamente */
+  overflow: auto !important;          /* <- scroll aquí, no en el fondo */
+  background: #0b0b0b !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* La imagen se contiene dentro del área visible del modal */
+.rc-viewer-img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+/* Estado sin imagen compatible */
+.rc-viewer-empty {
+  color: #fff !important;
+  padding: 24px !important;
+  text-align: center !important;
+}
+
+
+
+
+/* ===== Ajustes específicos para <= 555px ===== */
+@media (max-width: 555px){
+
+  /* Inputs más grandes*/
+  .rc-gastos-table td:nth-child(1) .rc-input,
+  .rc-gastos-table td:nth-child(2) .rc-input,
+  .rc-gastos-table td:nth-child(3) .rc-input,
+  .rc-gastos-table td:nth-child(4) .rc-input {
+    font-size: 16px;         
+    padding: 10px 10px;      
+    min-width: 120px;       
+    line-height: 1.2;
+    margin-left: -29px;
+  }
+
+
+  .rc-gastos-table td{
+    padding: 12px 14px 12px calc(14px + 140px); 
+  }
+
+  /* Footer: mostrar "Total de gastos" y el monto lado a lado, ocultando el resto */
+  .rc-gastos-table tfoot{ display:block !important; } 
+  .rc-gastos-table tfoot tr{
+    display:flex !important;
+    align-items:center;
+    justify-content:flex-end;
+    gap: 8px;
+    border:1px solid #e7e2d9;
+    border-radius:12px;
+    margin-top:8px;
+    padding:12px 14px;
+    background:#fff;
+    box-shadow: var(--shadow);
+  }
+
+  /* Ocultar todas las celdas del footer… */
+   /* Oculta TODAS las celdas del footer por defecto */
+  .rc-gastos-table tfoot td{
+    display: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* …y mostrar solo las 2 relevantes: (2) "Total de gastos" y (3) monto */
+  .rc-gastos-table tfoot td:nth-child(2),
+  .rc-gastos-table tfoot td:nth-child(3){
+    display: inline-flex !important;
+    align-items:center;
+    justify-content:flex-end;
+    gap: 6px;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-weight: 800;
+    color: var(--dark);
+    white-space: nowrap; /* evita que se vayan a dos líneas */
+  }
+
+  /* Quitar la regla que mostraba celdas extra del footer en mobile */
+  .rc-gastos-table tfoot td + td + td ~ td { display:none !important; }
+}

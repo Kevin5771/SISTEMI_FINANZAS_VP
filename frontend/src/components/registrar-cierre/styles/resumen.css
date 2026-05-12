@@ -1,0 +1,132 @@
+/* ===== Resumen ===== */
+.rc-resumen-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:16px;
+}
+.rc-res-col{
+  border:1px solid #e7e2d9;
+  border-radius: var(--radius);
+  background:#fff;
+  padding:14px;
+  box-shadow: var(--shadow);
+}
+.rc-res-title{
+  font-weight:800;
+  color:var(--dark);
+  margin-bottom:10px;
+  text-align:center;
+}
+.rc-res-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid #f0ece6;
+  border-radius:12px;
+  background:#f9fafb;
+  color:#1F2937;
+  font-weight:700;
+}
+.rc-res-item + .rc-res-item{ margin-top:8px; }
+.rc-res-item b{ font-weight:800; color:var(--dark); }
+.rc-res-item.ok{ background: #e9f8f1; border-color: #c9efd9; color: #0f5132; }
+.rc-res-item.bad{ background: #fdeaea; border-color: #f4c7c7; color: #b42323; }
+
+.rc-total-deposit{
+  margin-top:14px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 16px;
+  border:2px solid var(--primary);
+  border-radius:14px;
+  background:#fff;
+  box-shadow: var(--shadow);
+}
+.rc-total-deposit .money{
+  display:flex; align-items:center; gap:10px;
+  color:var(--primary); font-weight:800;
+}
+.rc-total-deposit .money svg{ width:24px; height:24px; fill: currentColor; }
+.rc-total-deposit b{ color:var(--primary); font-size:1.1rem; white-space: nowrap;}
+.rc-total-deposit.bad{ border-color: #b42323; }
+.rc-total-deposit.bad .money,
+.rc-total-deposit.bad b{ color: #b42323; }
+
+
+/* ===== Título "Resumen" con estilo similar a AMEX ===== */
+section.rc-card > h3 {
+  text-align: center;
+  font-weight: 800;
+  color: var(--dark);
+  margin: 0 0 10px 0;
+  font-size: 20px;               /* similar a títulos AMEX */
+  letter-spacing: 0.2px;
+}
+
+/* Label en 2 líneas (título + subtítulo) */
+.rc-res-left{
+  display:flex;
+  flex-direction:row;
+  line-height:1.1;
+  margin-top: 5px;
+}
+
+/* Subtítulo gris y pequeño para "(usada)" */
+.rc-res-sub{
+  color:#6b7280;        /* gris */
+  font-weight:600;
+  font-size:15px;
+  margin-top:0px;
+  margin-left: 5px;
+}
+
+/* Icono como imagen en "Total a depositar" */
+.rc-total-deposit .money .rc-total-icon{
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+
+/* ===== Resumen: responsive y orden ===== */
+@media (max-width: 555px){
+
+  .rc-total-deposit .money .rc-total-icon{
+    width: 25px;
+    height: 25px;
+  }
+
+  section.rc-card > h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .rc-resumen-grid{
+    grid-template-columns: 1fr;    /* 2 → 1 columna */
+    gap: 12px;
+  }
+
+  .rc-res-sistema { order: 1; }
+  .rc-res-admin   { order: 2; }
+
+  /* Un poco de aire y legibilidad en tarjetas */
+  .rc-res-col { padding: 12px; }
+  .rc-res-title { margin-bottom: 8px; }
+  .rc-res-item { padding: 10px 12px; }
+
+  .rc-res-left {
+    display: flex;
+    flex-direction: column;  /* apila Caja chica y (usada) */
+    align-items: flex-start; /* alineado a la izquierda */
+  }
+
+  .rc-res-sub {
+    color: #6b7280;   /* gris */
+    font-weight: 500;
+    font-size: 15px;
+    margin-top: 1px;
+    margin-bottom: -5px;
+  }
+}

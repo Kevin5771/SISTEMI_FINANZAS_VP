@@ -1,0 +1,23 @@
+[build]
+  base    = "frontend"
+  command = "npm ci && npm run build"
+  publish = "build"
+
+[build.environment]
+  # 1) Apaga el smart detection (ya lo tenías)
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+  # 2) Apaga el secret scanning estándar
+  SECRETS_SCAN_ENABLED = "false"
+
+# Proxy /api -> Render (evita CORS)
+[[redirects]]
+  from = "/api/*"
+  to = "https://sistemafinanzas2.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200

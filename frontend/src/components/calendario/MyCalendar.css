@@ -1,0 +1,226 @@
+/* Aumentar aún más el tamaño del mes/año */
+.rbc-toolbar-label {
+  font-size: 2rem; /* Texto más grande */
+  text-transform: capitalize; /* Por si acaso alguna parte no venga capitalizada */
+}
+
+/* Celdas de “hoy” */
+.today-cell {
+  background-color: #c1e0b3e0;
+}
+
+/* Ajustar la parrilla del calendario para que no tenga scrollbar vertical */
+.rbc-month-view, 
+.rbc-time-view, 
+.rbc-agenda-view {
+  overflow: visible !important;
+}
+
+/* Ocultar bordes de scrollbar en contenedor del calendario */
+.rbc-calendar {
+  -ms-overflow-style: none;  /* IE / Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.rbc-calendar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===============================================
+   Estilos específicos para Syncfusion Calendar
+   =============================================== */
+.e-schedule {
+  font-family: 'Poppins', sans-serif;
+
+  /* Oculta scrollbar interna si la genera Syncfusion */
+  -ms-overflow-style: none;  /* IE y Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.e-schedule::-webkit-scrollbar {
+  display: none;
+}
+
+.e-schedule .e-header-cells {
+  background-color: #fef8f4;
+  color: #032905;
+  font-weight: 500;
+  border-bottom: 1px solid #a1c99c;
+}
+
+.e-schedule .e-week-number {
+  background-color: #12b134d0;
+  color: #e57411;
+  font-weight: bold;
+}
+
+.e-schedule .e-appointment {
+  background-color: #0e6729;
+  border: 1px solid #a1c99c;
+  color: #470d0d;
+  font-weight: bold;
+}
+
+.e-schedule .e-appointment:hover {
+  opacity: 0.9;
+}
+
+/* 1) Asegurar los modales SIEMPRE por encima de todo */
+.modal,
+.modal-backdrop,
+.ReactModal__Overlay,
+.rc-modal-mask,
+.swal2-container {
+  position: fixed !important;
+  z-index: 6000 !important;     /* subir si algo aún lo tapa */
+}
+
+/* 2) Si usas popups propios del calendario de Syncfusion */
+.e-quick-popup-wrapper,
+.e-dialog,
+.e-schedule-dialog {
+  z-index: 6500 !important;
+}
+
+/* 3) Evitar “saltos” de la barra al abrir el modal (Bootstrap) */
+body.modal-open {
+  padding-right: 0 !important;  /* elimina compensación de scrollbar */
+  overflow: hidden;              /* conserva el bloqueo de fondo */
+}
+
+
+/* === Título Semana: side-by-side en pantallas normales === */
+.my-toolbar .toolbar-title{
+  display: inline-flex;          /* permite cambiar a columna en móvil */
+  align-items: baseline;         /* alinea texto bonito */
+  gap: 18px;                      /* separación entre mes y rango */
+  text-align: center;            /* mantiene centrado el bloque */
+  margin-left: 60px;
+}
+
+/* El subtítulo (rango) con un poco de suavidad */
+.my-toolbar .title-sub{
+  opacity: .8;
+  margin-top: 0;                 /* en desktop va a la par, sin margen arriba */
+}
+
+
+/* ======== Fix responsive RBC en ~400px (sin tocar tu layout) ======== */
+@media (max-width: 400px) {
+
+  .my-toolbar .toolbar-title{
+    display: flex;
+    flex-direction: column;      /* mes arriba, rango abajo */
+    align-items: center;
+    gap: 0;                      /* quita el gap horizontal */
+     margin-left: 0px;
+     text-align: center;
+  }
+  .my-toolbar .title-sub{
+    margin-top: 2px;             /* pequeño espacio entre líneas */
+  }
+
+  /* Permite scroll horizontal de la vista Semana/Día */
+  .rbc-time-view .rbc-time-content {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  /* Evita que las columnas se aplasten: fuerza un ancho mínimo “scrolleable” */
+  .rbc-time-view .rbc-time-content > * + * > * {
+    min-width: 720px;            /* prueba 840px si aún se corta */
+  }
+
+  /* El header de días acompaña el mismo ancho mínimo */
+  .rbc-time-header-content {
+    min-width: 720px;            /* mantén igual que arriba */
+  }
+
+  /* El “gutter” de horas queda fijo a la izquierda al hacer scroll */
+  .rbc-time-gutter,
+  .rbc-time-header-gutter {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #fff;
+  }
+
+  /* Si el mes también llega a cortarse por estilos externos, habilita scroll: */
+  .rbc-calendar {
+    overflow-x: auto;            /* solo si notas recorte en MONTH */
+  }
+}
+
+/* ======= Vista Semana/Día: sin scroll horizontal; con scroll vertical ======= */
+.calendar-container {
+  /* permite que el calendario tenga altura útil para scrollear horas */
+  height: 72vh;
+}
+.calendar-container .rbc-calendar,
+.rbc-time-view,
+.rbc-time-content {
+  height: 100% !important;
+}
+
+.rbc-time-view .rbc-time-content {
+  display: flex;          /* respetar layout flex */
+  overflow-x: hidden;     /* NO scroll horizontal */
+  overflow-y: auto;       /* SÍ scroll vertical para ver horas > 07:00 */
+}
+
+/* Gutter de horas: ancho fijo y “pegado” a la izquierda */
+.rbc-time-gutter,
+.rbc-time-header-gutter {
+  flex: 0 0 46px;
+  width: 46px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #fff;
+}
+
+/* Permitir que las columnas de días se contraigan al ancho del móvil */
+.rbc-time-content > * {
+  min-width: 0;           /* clave para que no cause overflow horizontal */
+  flex: 1 1 0;
+}
+
+/* Header (nombres de días) que acompañe el mismo comportamiento */
+.rbc-time-header-content {
+  min-width: 0;
+}
+.rbc-time-header-content > .rbc-row {
+  display: flex;
+}
+.rbc-time-header-content .rbc-header {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Slots de tiempo más compactos (sin tocar tamaños de letra) */
+.rbc-time-slot {
+  height: 32px;          /* ajusta si quieres ver aún más horas en pantalla */
+}
+
+/* ======= Responsive 360px ======= */
+@media (max-width: 400px) {
+  .calendar-container { height: 70vh; }
+
+  /* Botón “Semana” -> “Sem” lo hace el Toolbar; aquí solo cuidamos layout */
+  .my-toolbar .rbc-btn-group .btn { 
+    white-space: nowrap; 
+    padding: 8px 12px;
+  }
+
+  /* Evitar cualquier ancho mínimo grande en subcapas internas */
+  .rbc-time-view .rbc-time-content > * { min-width: 0; }
+  .rbc-time-header-content, 
+  .rbc-time-header-content > .rbc-row,
+  .rbc-time-header-content .rbc-header {
+    min-width: 0;
+  }
+}
+
+/* ======= Agenda en español (mensajes ya puestos) ======= */
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  text-transform: none;
+}

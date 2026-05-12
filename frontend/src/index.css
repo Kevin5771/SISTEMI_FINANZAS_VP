@@ -1,0 +1,40 @@
+:root{
+  --primary:#14B866;
+  --dark:#155E4B;            /* verde profundo sidebar */
+  --dark-2:#0F493A;          /* degradado debajo */
+  --accent:#FF7A00;          /* acento cálido */
+  --cream:#FFF4E8;           /* fondo general del mockup */
+  --slate:#1F2937;
+
+  --sb-open: 17.5rem;        /* ancho sidebar */
+  --radius: 22px;
+  --shadow: 0 20px 60px rgba(0,0,0,.10);
+  --inner-shadow: 0 1px 0 rgba(255,255,255,.15) inset;
+
+  --item-icon: 28px;
+  --item-gap: 10px;
+}
+
+html, body, #root {
+  height: 100%;
+  color: var(--dark-2);
+  background:linear-gradient(180deg, var(--dark), var(--dark-2));
+}
+body {
+  margin: 0; /* quita el borde blanco del navegador */
+}
+
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
